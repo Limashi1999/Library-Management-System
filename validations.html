@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8">
+  <title>LMS</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+ integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+     <script src="https://kit.fontawesome.com/b0933153bc.js" crossorigin="anonymous"></script>
+     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+
+     <script src="https://cdn.jsdelivr.net/npm/vee-validate@latest/dist/vee-validate.js"></script>
+     <script>
+        // Notify vue about the VeeValidate plugin
+         Vue.use(VeeValidate);
+        </script>
+      
+</head>
+<body>
+    <div class="container">
+        <div class="row main">
+            <div class="main-login main-center">
+            
+                <form id="signup-form" @submit.prevent="processForm">
+
+
+                    <div class="form-group">
+                        <label for="name" class="cols-sm-2 control-label">Your Name</label>
+                        <div class="cols-sm-10">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+              <input type="text" name="name" placeholder="Name" :class="{ 'form-control': true, 'is-danger': errors.has('name') }" v-model="name" v-validate="'required|alpha'">
+
+                            </div>
+             <span v-show="errors.has('name')" class="help is-danger">{{ errors.first('name') }}</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group ">
+                        <button id="button" :disabled="errors.any()" class="btn btn-primary btn-lg btn-block login-button">Register</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Notify vue about the VeeValidate plugin
+Vue.use(VeeValidate);
+//declare an array of some usernames user must not input
+ var username = [
+    'admin',
+    'password',
+    'administartor'
+]
+//create new rule
+const newrule = {
+// will be added to default English messages.
+  getMessage(field, params, data) {
+      return (data && data.message) || 'Something went wrong';
+  },
+    // Returns a Boolean or a Promise.
+  validate(value) {
+    return new Promise(resolve => {
+      resolve({
+        valid: username.includes(value.toLowerCase()) ? false : !! value,
+        data: { message: `${value} has already been taken` }
+      });
+    });
+  }
+};
+// Tell the Validator about the new rule
+  VeeValidate.Validator.extend('checkuser',newrule);
+    const signupForm = new Vue({
+        el: '#signup-form',
+        data: {
+            name: '',
+            email: '',
+            username: '',
+            password: ''
+        },
+        methods: {
+            processForm: function() {
+        //attempt validating all
+                this.$validator.validateAll().then((result) => {
+                    if (result) {
+            //validation passed succesfully
+
+                       alert('Form validated succesfully');
+                    }
+                });
+            }
+        }
+    });
+    </script>
+</body>
+</html>

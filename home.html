@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="Team iSECURE">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,
+    initial-scale=1,shrink-to-fit=no">
+    <title>Library Management System</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+ integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+     <script src="https://kit.fontawesome.com/b0933153bc.js" crossorigin="anonymous"></script>
+     
+          <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+     
+     <style type="text/css">
+        #overlay
+        {
+            position: fixed;
+            top:0;
+            bottom:0;
+            left:0;
+            right:0;
+            background:rgb(0,0,0,0.6);
+        }
+     </style>
+
+     <!--Footer styles-->
+<style>
+
+	a {
+		font-size: 11.5pt;
+	}
+	
+	.col_white_amrc { color:#FFF;}
+	footer { width:100%; background-color:#303030; min-height:250px; padding:10px 0px 25px 0px ;}
+	.pt2 { padding-top:40px ; margin-bottom:20px ;}
+	footer p { font-size:13px; color:#CCC; padding-bottom:0px; margin-bottom:8px;}
+	.mb10 { padding-bottom:15px ;}
+	.footer_ul_amrc { margin:0px ; list-style-type:none ; font-size:14px; padding:0px 0px 10px 0px ; }
+	.footer_ul_amrc li {padding:0px 0px 5px 0px;}
+	.footer_ul_amrc li a{ color:#CCC;}
+	.footer_ul_amrc li a:hover{ color:#fff; text-decoration:none;}
+	.fleft { float:left;}
+	.padding-right { padding-right:10px; }
+
+	.footer_ul2_amrc {margin:0px; list-style-type:none; padding:0px;}
+	.footer_ul2_amrc li p { display:table; }
+	.footer_ul2_amrc li a:hover { text-decoration:none;}
+	.footer_ul2_amrc li i { margin-top:5px;}
+
+	.bottom_border { border-bottom:1px solid #323f45; padding-bottom:20px;}
+	.foote_bottom_ul_amrc {
+	list-style-type:none;
+	padding:0px;
+	display:table;
+	margin-top: 10px;
+	margin-right: auto;
+	margin-bottom: 10px;
+	margin-left: auto;
+	}
+	.foote_bottom_ul_amrc li { display:inline;}
+	.foote_bottom_ul_amrc li a { color:#999; margin:0 12px;}
+
+	.social_footer_ul { display:table; margin:15px auto 0 auto; list-style-type:none;  }
+	.social_footer_ul li { padding-left:20px; padding-top:10px; float:left; }
+	.social_footer_ul li a { color:#CCC; border:1px solid #CCC; padding:8px;border-radius:50%;}
+	.social_footer_ul li i {  width:20px; height:20px; text-align:center;}
+
+	li {
+	  float: left;
+	  color: white;
+	}
+
+</style>
+</head>
+<body>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.26/vue.min.js"></script>
+    
+    <div id="demo">
+        <div class="container-fluid">
+            <div class="row bg-dark">
+                <div class="col-lg-1">
+                </div>
+                <div class="col-lg-4">
+                    <p class="text-center text-light display-4 pt-1"
+                 style="font-size: 21pt;"><img src="logo.png" width="41px">&nbsp;Library Management System</p>
+                </div>        
+                <div class="col-lg-4">
+                <ul class="pt-2" style="font-size: 17pt;">         
+                    <li><a href="#home">Home</a>&nbsp; &nbsp; &nbsp;&nbsp;</li>
+                    <li><a href="#news">News</a>&nbsp; &nbsp; &nbsp;&nbsp;</li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+                </div>
+            
+                <form class="navbar-form navbar-left" action="/action_page.php">
+                    <div class="input-group">
+                      <input type="text" class="form-control" v-model="search" style="font-size: 9pt;" placeholder="Search">
+                      <div class="input-group-btn">
+                        <button class="btn btn-default" type="submit">
+                          <i class="glyphicon glyphicon-search"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+            </div>
+        </div>        
+        <br/>
+        <div class="container">
+            
+            <div class="row mt-3">
+                <div class="col-lg-6">
+                    <h3 class="text-info"> Registered Users</h3>
+                </div>
+                <div class="col-lg-6">
+                    <button class="btn btn-info float-right" @click="showAddModal=true">
+                        <i class="fas fa-user"></i>&nbsp;&nbsp; Add New User
+                    </button>
+                </div>
+                
+            </div>
+                <hr class="bg-info">
+                
+                <div class="alert alert-danger" v-if="errorMsg">
+                    Error Message
+                </div>
+                <div class="alert alert-success" v-if="successMsg">
+                    Success Message
+                </div>
+
+            <!--Diplaying records-->
+                      <div class="row">
+                        <div class="col-lg-12"> 
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr class="text-center bg-info text-light" style="font-size: 12pt;">
+                                        <th>Customer ID</th> 
+                                        <th>First Name</th> 
+                                        <th>Last Name</th> 
+                                        <th>Telephone</th> 
+                                        <th>Address</th>
+                                        <th>NIC</th>
+                                        <th>Edit</th>  
+                                        <th>Delete</th>     
+                                    </tr>
+                                </thead>
+                                <tbody style="font-size: 11pt;" >
+                                    <tr class="text-center" v-for="person in people | filterBy customFilter">
+                                        <td>{{ person.ID }}</td>
+                                        <td>{{ person.FirstName }}</td>
+                                        <td>{{ person.LastName }}</td>
+                                        <td>{{ person.Telephone }}</td>
+                                        <td>{{ person.Address }}</td>
+                                        <td>{{ person.NIC }}</td>
+                                        <td><a href="#" class="text-sucess" @click="showEditModal=true"><i class="fas fa-edit"></i></a></td>
+                                        <td><a href="#" class="text-danger" @click="showDeleteModal=true"><i class="fas fa-trash-alt"></i></a></td>
+                                      </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+        <!--Add New User Model-->
+        <div id="overlay" v-if="showAddModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Add New User</h4>
+                        <button type="button" class="close" @click="showAddModal=false">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body p-4" id="getdata"> 
+                        <form>
+                            <div class="form-group">
+                             <input type="text" name="FirstName" class="form-control form-control-lg" placeholder="First Name" v-model="firstname">
+                            </div>
+                            <div class="form-group">
+                             <input type="text" name="LastName" class="form-control form-control-lg" placeholder="Last Name" v-model="lastname">
+                            </div>
+                            <div class="form-group">
+                             <input type="number" name="Telephone" class="form-control form-control-lg" placeholder="Telephone" v-model="telephone">
+                             </div>
+                             <div class="form-group">
+                                <input type="text" name="Address" class="form-control form-control-lg" placeholder="Address" v-model="address">
+                               </div>
+                               <div class="form-group">
+                                <input type="text" name="NIC" class="form-control form-control-lg" placeholder="NIC" v-model="nic">
+                               </div>
+                             <div class="form-group">
+                                 <button class="btn btn-info btn-block btn-lg">Add User</button>
+                                 <p>Message is: {{ firstname }}</p>
+                                 <p>Message is: {{ lastname }}</p>
+                                 <p>Message is: {{ telephone }}</p>
+                                 <p>Message is: {{ address }}</p>
+                                 <p>Message is: {{ nic }}</p>
+                                
+                             </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+        <!--Edit User-->
+        <div id="overlay" v-if="showEditModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Edit User</h4>
+                        <button type="button" class="close" @click="showEditModal=false">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body p-4" id="editdata">
+                        <form>
+                            <div class="form-group">
+                             <input type="text" name="FirstName" class="form-control form-control-lg" placeholder="First Name" v-model="firstname">
+                            </div>
+                            <div class="form-group">
+                             <input type="text" name="LastName" class="form-control form-control-lg" placeholder="Last Name" v-model="lastname">
+                            </div>
+                            <div class="form-group">
+                             <input type="number" name="Telephone" class="form-control form-control-lg" placeholder="Telephone" v-model="telephone">
+                             </div>
+                             <div class="form-group">
+                                <input type="text" name="Address" class="form-control form-control-lg" placeholder="Address" v-model="address">
+                               </div>
+                               <div class="form-group">
+                                <input type="text" name="NIC" class="form-control form-control-lg" placeholder="NIC" v-model="nic">
+                               </div>
+                             <div class="form-group">
+                                 <button class="btn btn-info btn-block btn-lg">Update User</button>
+                             </div>
+                             <p>Message is: {{ firstname }}</p>
+                             <p>Message is: {{ lastname }}</p>
+                             <p>Message is: {{ telephone }}</p>
+                             <p>Message is: {{ address }}</p>
+                             <p>Message is: {{ nic }}</p>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+         <!--Delete User-->
+         <div id="overlay" v-if="showDeleteModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Delete User</h4>
+                        <button type="button" class="close" @click="showDeleteModal=false">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body p-4">
+                        <form>
+                             <div class="modal-body p-4">
+                                <h4 class="text-danger">Are you sure want to delete User?</h4>
+                                <h5>You are deleting 'Sahan'</h5>
+                                <hr>
+                                <button class="btn btn-danger btn-lg">Yes</button>
+                                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                                <button class="btn btn-success btn-lg" @click="showDeleteModal=false">No</button>
+                             </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <br> <br> <br> <br> <br> <br> <br>
+    <!--footer starts from here-->
+    <footer class="footer" >
+        <div class="container bottom_border">
+        <div class="row">
+        <div class=" col-sm-4 col-md col-sm-4  col-12 col">
+        <h3 class="headin5_amrc col_white_amrc pt2">Contact</h3>
+        <!--headin5_amrc-->
+        <p  style="font-size: 11.5pt;"class="mb10 "> This is a library management system. It has ability to record customer details, book 
+            details and  details of lend books.</p>
+        <p style="font-size: 11pt;"><i class="fa fa-location-arrow"></i> 39/50,Main road,Matara </p>
+        <p style="font-size: 11pt;"><i class="fa fa-phone"></i>  +94 0412221097 </p>
+        <p style="font-size: 11pt;"><i class="fa fa fa-envelope"></i> librarymanagementsystem@gmail.com  </p>
+        
+        </div>
+        
+        <div class=" col-sm-4 col-md  col-6 col">
+        <h3 class="headin5_amrc col_white_amrc pt2">&nbsp; &nbsp;Quick links</h3>
+        <!--headin5_amrc-->
+        <ul class="footer_ul_amrc">
+        <li>&nbsp; &nbsp; <a href="http://codeaerons.ml">Book Details</a></li>
+        <li>&nbsp; &nbsp; <a href="http://codeaerons.ml">Customer Details</a></li>
+        <li>&nbsp; &nbsp; <a href="http://codeaerons.ml">Lend Details</a></li>
+        </ul>
+        <!--footer_ul_amrc ends here-->
+        </div>
+        
+        
+        <div class=" col-sm-4 col-md  col-12 col">
+        <h3 class="headin5_amrc col_white_amrc pt2">Follow Us</h3>
+        <!--headin5_amrc ends here-->
+        
+        <ul class="footer_ul2_amrc">
+        
+        <a href="#"><i class="fab fa-twitter fleft padding-right"></i> </a><p><a href="http://codeaerons.ml">http://codeaerons.ml</a></p>
+        <a href="#"><i class="fab fa-facebook fleft padding-right"></i> </a><p><a href="http://codeaerons.ml">http://codeaerons.ml</a></p>
+        </ul>
+        <!--footer_ul2_amrc ends here-->
+        </div>
+        </div>
+        </div>
+        
+        
+        <div class="container">
+        <!--foote_bottom_ul_amrc ends here-->
+        <p style="font-size: 10pt;" class="text-center">Copyright @2020| Library Management system</p>
+        
+        </div>
+        
+        </footer>
+    <script>
+        var demo = new Vue({
+         
+    el: '#demo',
+    data: {
+        search: '',
+        errorMsg:false,
+        successMsg:false,
+        showAddModal:false,
+        showEditModal:false,
+        showDeleteModal:false,
+
+        people: [
+          {ID: '01', FirstName: 'Limashi', LastName: 'Rashmika',Telephone:'0412221097'},
+          {ID: '02', FirstName: 'Sahan', LastName: 'Thilina',Telephone:'0412221022'},
+          {ID: '03', FirstName: 'Sachini', LastName: 'Umesha',Telephone:'0412221987'},
+          {ID: '04', FirstName: 'Navindu', LastName: 'Kalhara',Telephone:'0412221093'},
+        
+        ]
+    },
+    methods: {
+      customFilter: function(person) {
+          return person.FirstName.indexOf(this.search) != -1
+          ;
+      }
+    },
+   
+})
+ </script>
+
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script type="text/javascript" src="main2.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.26/vue.min.js"></script>
+
+<!--Footer tags-->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+   
+</body>
+</html>
